@@ -1,27 +1,25 @@
-class GBASave {
-    constructor(arrayBuffer) {
-        this.data = new Uint8Array(arrayBuffer);
+function readGBA(buffer) {
+    const data = new Uint8Array(buffer);
+
+    let game = "Unknown";
+
+    if (data.length === 131072) {
+        game = "GBA Save";
     }
 
-    getSize() {
-        return this.data.length;
+    let player = "";
+
+    for (let i = 0; i < 7; i++) {
+        const c = data[0x0000 + i];
+
+        if (c >= 32 && c <= 126) {
+            player += String.fromCharCode(c);
+        }
     }
 
-    isValid() {
-        return this.data.length === 131072 || this.data.length === 65536;
-    }
-
-    getTrainerName() {
-        return "Coming Soon";
-    }
-
-    getMoney() {
-        return 0;
-    }
-
-    setMoney(value) {
-        console.log("Money set to:", value);
-    }
+    return {
+        game: game,
+        player: player || "---",
+        money: 0
+    };
 }
-
-window.GBASave = GBASave;
