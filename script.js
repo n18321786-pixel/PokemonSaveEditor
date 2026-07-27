@@ -1,24 +1,34 @@
-const saveFile = document.getElementById("saveFile");
+const fileInput = document.getElementById("saveFile");
 const openBtn = document.getElementById("openBtn");
 const info = document.getElementById("info");
 
-openBtn.addEventListener("click", async () => {
-
-    if (!saveFile.files.length) {
-        info.innerHTML = "❌ Please select a save file.";
+openBtn.addEventListener("click", () => {
+    if (!fileInput.files.length) {
+        info.innerHTML = "<h3>Please select a save file.</h3>";
         return;
     }
 
-    const file = saveFile.files[0];
+    const file = fileInput.files[0];
+    const reader = new FileReader();
 
-    const buffer = await file.arrayBuffer();
-    const data = new Uint8Array(buffer);
+    reader.onload = function(e) {
 
-    info.innerHTML = `
-        <h3>Save Loaded Successfully</h3>
-        <p><b>File Name:</b> ${file.name}</p>
-        <p><b>File Size:</b> ${data.length} bytes</p>
-    `;
+        const save = new GBASave(e.target.result);
 
-    console.log(data);
+        if (!save.isValid()) {
+            info.innerHTML = "<h3>❌ Unsupported save file.</h3>";
+            return;
+        }
+
+        info.innerHTML = `
+            <h2>Save Loaded</h2>
+
+            <p><b>File:</b> ${file.name}</p>
+            <p><b>Size:</b> ${save.getSize()} bytes</p>
+            <p><b>Trainer:</b> ${save.getTrainerName()}</p>
+            <p><b>Money:</b> ${save.getMoney()}</p>
+        `;
+    };
+
+    reader.readAsArrayBuffer(file);
 });

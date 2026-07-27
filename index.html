@@ -18,18 +18,30 @@
 
 <main>
 
+    <h2>Open Pokémon Save File</h2>
+
     <input type="file" id="saveFile" accept=".sav">
 
     <br><br>
 
     <button id="openBtn">Open Save</button>
 
+    <hr>
+
+    <h3>Player Information</h3>
+
+    <p><strong>Game:</strong> <span id="game">Unknown</span></p>
+
+    <p><strong>Player:</strong> <span id="player">---</span></p>
+
+    <p><strong>Money:</strong> <span id="money">0</span></p>
+
     <div id="info">
         No save loaded.
     </div>
 
 </main>
-
+<script src="src/gba.js"></script
 <script src="script.js"></script>
 
 </body>
